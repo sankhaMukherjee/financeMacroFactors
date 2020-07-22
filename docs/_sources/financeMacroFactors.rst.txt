@@ -1,6 +1,14 @@
 financeMacroFactors package
 ===========================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   financeMacroFactors.companies
+
 Submodules
 ----------
 
