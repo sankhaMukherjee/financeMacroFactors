@@ -1,10 +1,7 @@
 # financeMacroFactors
 
-One Paragraph of project description goes here
-
-## Prerequisites
-
-You will need to have a valid Python installation on your system. This has been tested with Python 3.6. 
+This library generates provides a set of convenience functions that will allow one to
+generate macro economic factors and company financials within a single library.
 
 ## Getting Started
 
@@ -14,17 +11,20 @@ and testing purposes. Detailed documentation is present [here](https://sankhamuk
 ### Package Installation
 
 This is the repository is meant to be used for installing the financeMacroFactors package. 
-A wheel dstribution of this package is present in the [`dist`](../master/dist) folder and may be 
-installed within your virtual enviroonment. Just download this directly into your folder and install 
-like any other pip package as:
+A wheel dstribution of this package is present in the `dist` folder and may be 
+installed within your virtual enviroonment. 
 
 `pip3 install financeMacroFactors-<version>-py3-none-any.whl`
 
-Git alternatively allows you to install packages directly from Github. Consider doing the following:
+Note that the `dist` folder is not included within this repo because the package might 
+become excessively large. You will need do clone the repository and build the package yourself
+on your system.
+
+Alternatively, since git allows you to install packages directly from Github. Consider 
+doing the following within your virtual environment:
 
 `pip3 install git+https://github.com/sankhaMukherjee/financeMacroFactors.git`
 
-This has been built upon a Unix system. If you use this for other systems, you may wish to consider building this library from source.
 
 ### Package Building
 
