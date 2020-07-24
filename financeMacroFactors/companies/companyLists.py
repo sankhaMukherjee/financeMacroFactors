@@ -24,11 +24,15 @@ def getSNP500CompanyList():
         and warnings to the user.
     '''
 
+    logger = logging.getLogger('financeMacroFactors.companies.companyLists.getSNP500CompanyList')
+
     try:
         
+        logger.debug('Downloading data from the wikipedia page ...')
         website = requests.get('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies').text
-        soup = BeautifulSoup(website, features="html.parser")
 
+        logger.debug('Parsing the web data...')
+        soup = BeautifulSoup(website, features="html.parser")
         companyTable = soup.find('table', {'id':'constituents'})
         rows = companyTable.find_all('tr')
 
@@ -41,6 +45,8 @@ def getSNP500CompanyList():
         for values in rows[1:]:
             data = {h:v.getText().strip() for h, v in zip(header, values.find_all('td'))}
             results.append( data )
+
+        logger.debug(f'{len(results)} rows of data generated ...')
 
         return results
 
