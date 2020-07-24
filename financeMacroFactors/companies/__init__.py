@@ -9,3 +9,4 @@ open sources.
 '''
 
 from financeMacroFactors.companies.companyLists import getSNP500CompanyList
+from financeMacroFactors.companies.marketWarchData import getTickerFundamentalDataMW
