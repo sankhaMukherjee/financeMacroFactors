@@ -12,6 +12,14 @@ financeMacroFactors.companies.companyLists module
    :undoc-members:
    :show-inheritance:
 
+financeMacroFactors.companies.marketWarchData module
+----------------------------------------------------
+
+.. automodule:: financeMacroFactors.companies.marketWarchData
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Module contents
 ---------------

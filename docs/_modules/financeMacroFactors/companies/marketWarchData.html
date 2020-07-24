@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>financeMacroFactors.companies.marketWarchData &mdash; financeMacroFactors 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> financeMacroFactors
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unit testing.html">Unit Testing</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../financeMacroFactors.html">financeMacroFactors package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">financeMacroFactors</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>financeMacroFactors.companies.marketWarchData</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for financeMacroFactors.companies.marketWarchData</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+
+<span class="n">logBase</span> <span class="o">=</span> <span class="s1">&#39;financeMacroFactors.companies.marketWatchData.&#39;</span>
+
+<div class="viewcode-block" id="convertNumberMW"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.convertNumberMW">[docs]</a><span class="k">def</span> <span class="nf">convertNumberMW</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;translate a string to a potential number</span>
+<span class="sd">    Marketwatch contains numbers within HTML tables as text. The</span>
+<span class="sd">    text is present in a form that is specific to Marketwatch and</span>
+<span class="sd">    thus cannot be easily translated. This function will help with</span>
+<span class="sd">    the translation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    number : str</span>
+<span class="sd">        A string that should be converted into a number</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or str</span>
+<span class="sd">        If the correct translation was performed, then this is going</span>
+<span class="sd">        to return a floating point number representing the number. </span>
+<span class="sd">        Otherwise, it will return the original string.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logBase</span> <span class="o">+</span> <span class="s1">&#39;convertNumberMW&#39;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># This is a negative number</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">number</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">):</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            
+        <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">):</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">1e12</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">):</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">1e9</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">):</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">1e6</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;K&#39;</span><span class="p">):</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">1e3</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">):</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">1e-2</span>
+        
+        <span class="n">number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">*</span> <span class="n">multiplier</span> <span class="o">*</span> <span class="n">sign</span>
+        <span class="k">return</span> <span class="n">number</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to convert </span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">number</span>
+    
+    <span class="k">return</span> <span class="n">number</span></div>
+
+<div class="viewcode-block" id="getDataFromMWURL"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.getDataFromMWURL">[docs]</a><span class="k">def</span> <span class="nf">getDataFromMWURL</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get data from a mamrketwatch URL page</span>
+<span class="sd">    Given a particular URL, this function is going to return</span>
+<span class="sd">    all the data that is associated with the particular URL.</span>
+<span class="sd">    Typically the results are present in multiple tables. The</span>
+<span class="sd">    data from all the tables are combined into a single table</span>
+<span class="sd">    before it is returned. Typically, the headers remain </span>
+<span class="sd">    unchained.</span>
+<span class="sd">    Note that this function should not be used directly, but</span>
+<span class="sd">    rather through the use of other functions present within</span>
+<span class="sd">    this module, sinnce this function doees not check whether</span>
+<span class="sd">    this url actually exists or not.</span>
+<span class="sd">    In the case of an error, an empty list is returned.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        This should be a Markektwatch URL that deals with</span>
+<span class="sd">        proper stock information.</span>
+<span class="sd">    convert : bool, optional</span>
+<span class="sd">        determine whether numbers represented as strings should</span>
+<span class="sd">        be coonverted into numbers, by default ``True``.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list</span>
+<span class="sd">        The data present within the tables within the supplied</span>
+<span class="sd">        URL.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logBase</span> <span class="o">+</span> <span class="s1">&#39;getDataFromMWURL&#39;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">html_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">page_content</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html_data</span><span class="p">,</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
+        
+        <span class="n">allData</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">tables</span> <span class="o">=</span> <span class="n">page_content</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">tNo</span><span class="p">,</span> <span class="n">table</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tNo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">)][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">allData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+                <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Growth&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Margin&#39;</span><span class="p">):</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">convert</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">convertNumberMW</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+                <span class="n">allData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                
+        <span class="k">return</span> <span class="n">allData</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to obtain the data from the URL [</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="getTickerFundamentalDataMW"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.getTickerFundamentalDataMW">[docs]</a><span class="k">def</span> <span class="nf">getTickerFundamentalDataMW</span><span class="p">(</span><span class="n">ticker</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get Valuation data for the supplied ticker</span>
+<span class="sd">    This is going to get all financials from marketwatch, including the income statement,</span>
+<span class="sd">    the balance sheet, and the cash-flow sheet for the lat few quarters and years separately</span>
+<span class="sd">    and return the result in a dictionary. In case of any error is made, this is going to</span>
+<span class="sd">    return an empty dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ticker : str</span>
+<span class="sd">        A valid ticker for downloading company data.</span>
+<span class="sd">    convert : bool, optional</span>
+<span class="sd">        Used to convert numeric data present in the webpage as a string back into a </span>
+<span class="sd">        number, by default ``True``. Set this to False if you want to save the data</span>
+<span class="sd">        from the internet as CSV files.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        financial data associated with a particular stock</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logBase</span> <span class="o">+</span> <span class="s1">&#39;getTickerFundamentalDataMW&#39;</span><span class="p">)</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;IncomeStatement&#39;</span>       <span class="p">:</span> <span class="s1">&#39;https://www.marketwatch.com/investing/stock/</span><span class="si">{}</span><span class="s1">/financials&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;IncomeStatementQuarter&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.marketwatch.com/investing/stock/</span><span class="si">{}</span><span class="s1">/financials/income/quarter&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;BalanceSheet&#39;</span>          <span class="p">:</span> <span class="s1">&#39;https://www.marketwatch.com/investing/stock/</span><span class="si">{}</span><span class="s1">/financials/balance-sheet&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;BalanceSheetQuarter&#39;</span>   <span class="p">:</span> <span class="s1">&#39;https://www.marketwatch.com/investing/stock/</span><span class="si">{}</span><span class="s1">/financials/balance-sheet/quarter&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CashFlow&#39;</span>              <span class="p">:</span> <span class="s1">&#39;https://www.marketwatch.com/investing/stock/</span><span class="si">{}</span><span class="s1">/financials/cash-flow&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CashFlowQuarter&#39;</span>       <span class="p">:</span> <span class="s1">&#39;https://www.marketwatch.com/investing/stock/</span><span class="si">{}</span><span class="s1">/financials/cash-flow/quarter&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">allResults</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">urlKey</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">urls</span><span class="p">[</span><span class="n">urlKey</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ticker</span><span class="p">)</span>
+            <span class="n">allData</span> <span class="o">=</span> <span class="n">getDataFromMWURL</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">convert</span><span class="p">)</span>
+
+            <span class="n">allResults</span><span class="p">[</span><span class="n">urlKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">allData</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to generate information for ticker [</span><span class="si">{</span><span class="n">ticker</span><span class="si">}</span><span class="s1">]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span>
+        
+
+    <span class="k">return</span> <span class="n">allResults</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Sankha S. Mukherjee
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

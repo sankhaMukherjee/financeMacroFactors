@@ -96,6 +96,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">financeMacroFactors.companies package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-financeMacroFactors.companies.companyLists">financeMacroFactors.companies.companyLists module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-financeMacroFactors.companies.marketWarchData">financeMacroFactors.companies.marketWarchData module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-financeMacroFactors.companies">Module contents</a></li>
 </ul>
 </li>
@@ -201,6 +202,92 @@ and warnings to the user.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>list of dictionaries</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-financeMacroFactors.companies.marketWarchData">
+<span id="financemacrofactors-companies-marketwarchdata-module"></span><h2>financeMacroFactors.companies.marketWarchData module<a class="headerlink" href="#module-financeMacroFactors.companies.marketWarchData" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="financeMacroFactors.companies.marketWarchData.convertNumberMW">
+<code class="sig-prename descclassname">financeMacroFactors.companies.marketWarchData.</code><code class="sig-name descname">convertNumberMW</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/financeMacroFactors/companies/marketWarchData.html#convertNumberMW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#financeMacroFactors.companies.marketWarchData.convertNumberMW" title="Permalink to this definition">¶</a></dt>
+<dd><p>translate a string to a potential number
+Marketwatch contains numbers within HTML tables as text. The
+text is present in a form that is specific to Marketwatch and
+thus cannot be easily translated. This function will help with
+the translation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>str</em>) – A string that should be converted into a number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If the correct translation was performed, then this is going
+to return a floating point number representing the number.
+Otherwise, it will return the original string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="financeMacroFactors.companies.marketWarchData.getDataFromMWURL">
+<code class="sig-prename descclassname">financeMacroFactors.companies.marketWarchData.</code><code class="sig-name descname">getDataFromMWURL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">convert</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/financeMacroFactors/companies/marketWarchData.html#getDataFromMWURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#financeMacroFactors.companies.marketWarchData.getDataFromMWURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data from a mamrketwatch URL page
+Given a particular URL, this function is going to return
+all the data that is associated with the particular URL.
+Typically the results are present in multiple tables. The
+data from all the tables are combined into a single table
+before it is returned. Typically, the headers remain
+unchained.
+Note that this function should not be used directly, but
+rather through the use of other functions present within
+this module, sinnce this function doees not check whether
+this url actually exists or not.
+In the case of an error, an empty list is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – This should be a Markektwatch URL that deals with
+proper stock information.</p></li>
+<li><p><strong>convert</strong> (<em>bool</em><em>, </em><em>optional</em>) – determine whether numbers represented as strings should
+be coonverted into numbers, by default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The data present within the tables within the supplied
+URL.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="financeMacroFactors.companies.marketWarchData.getTickerFundamentalDataMW">
+<code class="sig-prename descclassname">financeMacroFactors.companies.marketWarchData.</code><code class="sig-name descname">getTickerFundamentalDataMW</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ticker</span></em>, <em class="sig-param"><span class="n">convert</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/financeMacroFactors/companies/marketWarchData.html#getTickerFundamentalDataMW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#financeMacroFactors.companies.marketWarchData.getTickerFundamentalDataMW" title="Permalink to this definition">¶</a></dt>
+<dd><p>get Valuation data for the supplied ticker
+This is going to get all financials from marketwatch, including the income statement,
+the balance sheet, and the cash-flow sheet for the lat few quarters and years separately
+and return the result in a dictionary. In case of any error is made, this is going to
+return an empty dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> (<em>str</em>) – A valid ticker for downloading company data.</p></li>
+<li><p><strong>convert</strong> (<em>bool</em><em>, </em><em>optional</em>) – Used to convert numeric data present in the webpage as a string back into a
+number, by default <code class="docutils literal notranslate"><span class="pre">True</span></code>. Set this to False if you want to save the data
+from the internet as CSV files.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>financial data associated with a particular stock</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
