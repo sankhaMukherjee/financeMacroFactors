@@ -84,7 +84,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tldr">TLDR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging-and-debugging">Logging and Debugging</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="release notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
@@ -160,8 +164,74 @@
             
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>This should provide an introduction to the entire
-project.</p>
+<p>This library generates provides a set of convenience functions that will allow one to
+generate macro economic factors and company financials within a single library. This
+lirbary is intended to be used by value-investors who wish to create algorithmic investing
+platforms that leverage free/paid data sources for their resource.</p>
+<div class="section" id="tldr">
+<h2>TLDR<a class="headerlink" href="#tldr" title="Permalink to this headline">¶</a></h2>
+<p>For getting started, just install the library using PIP like any other library, and start using it. For example,
+for getting a set of companies that are a part of the SNP 500 companies,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">financeMacroFactors</span> <span class="k">as</span> <span class="nn">fM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">companies</span> <span class="o">=</span> <span class="n">fM</span><span class="o">.</span><span class="n">companies</span><span class="o">.</span><span class="n">getSNP500CompanyList</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">companies</span><span class="p">)</span>
+<span class="go">505</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">companies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">{&#39;CIK&#39;: &#39;0000066740&#39;,</span>
+<span class="go"> &#39;Date first added&#39;: &#39;1976-08-09&#39;,</span>
+<span class="go"> &#39;Founded&#39;: &#39;1902&#39;,</span>
+<span class="go"> &#39;GICS Sector&#39;: &#39;Industrials&#39;,</span>
+<span class="go"> &#39;GICS Sub Industry&#39;: &#39;Industrial Conglomerates&#39;,</span>
+<span class="go"> &#39;Headquarters Location&#39;: &#39;St. Paul, Minnesota&#39;,</span>
+<span class="go"> &#39;SEC filings&#39;: &#39;reports&#39;,</span>
+<span class="go"> &#39;Security&#39;: &#39;3M Company&#39;,</span>
+<span class="go"> &#39;Symbol&#39;: &#39;MMM&#39;}</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="logging-and-debugging">
+<h2>Logging and Debugging<a class="headerlink" href="#logging-and-debugging" title="Permalink to this headline">¶</a></h2>
+<p>Funcitons within the library use the term <cite>financeMacroFactors</cite> as the name upon which a standard python
+logger can be used. Each function will log information to various levels of verbosity that can be used
+within your own implementations. Here is an example of obtaining debug information using the python
+logging favility from within the loggers:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;financeMacroFactors&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">financeMacroFactors</span> <span class="k">as</span> <span class="nn">fM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">fM</span><span class="o">.</span><span class="n">companies</span><span class="o">.</span><span class="n">getSNP500CompanyList</span><span class="p">()</span>
+<span class="go">2020-07-25 00:36:13,029 - financeMacroFactors.companies.companyLists.getSNP500CompanyList - DEBUG - Downloading data from the wikipedia page ...</span>
+<span class="go">2020-07-25 00:36:13,067 - financeMacroFactors.companies.companyLists.getSNP500CompanyList - DEBUG - Parsing the web data...</span>
+<span class="go">2020-07-25 00:36:13,413 - financeMacroFactors.companies.companyLists.getSNP500CompanyList - DEBUG - 505 rows of data generated ...</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>On the other hand, it is possible to make sure that only the error level information is logged. For example,
+the following code will only generate logging information when an error occurs, and be silent when the function
+returns successfully.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;financeMacroFactors&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">financeMacroFactors</span> <span class="k">as</span> <span class="nn">fM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">fM</span><span class="o">.</span><span class="n">companies</span><span class="o">.</span><span class="n">getSNP500CompanyList</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
