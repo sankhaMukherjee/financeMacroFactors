@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorials" href="tutorials.html" />
-    <link rel="prev" title="Release Notes" href="release notes.html" /> 
+    <link rel="next" title="Introduction" href="introduction.html" />
+    <link rel="prev" title="Welcome to financeMacroFactors’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,20 +84,18 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release notes.html">Release Notes</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tldr">TLDR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detailed-installation">Detailed Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-from-source">Building from source</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="unit testing.html">Unit Testing</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="financeMacroFactors.html">financeMacroFactors package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API Reference.html">API Reference</a></li>
 </ul>
 
             
@@ -167,24 +165,28 @@
 <h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="tldr">
 <h2>TLDR<a class="headerlink" href="#tldr" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">env</span>
-<span class="pre">source</span> <span class="pre">env/bin/activate</span>
-<span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">git+https://github.com/sankhaMukherjee/financeMacroFactors.git</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m venv env
+<span class="gp">$</span> <span class="nb">source</span> env/bin/activate
+<span class="gp">$</span> pip3 install git+https://github.com/sankhaMukherjee/financeMacroFactors.git
+</pre></div>
+</div>
 </div>
 <div class="section" id="detailed-installation">
 <h2>Detailed Installation<a class="headerlink" href="#detailed-installation" title="Permalink to this headline">¶</a></h2>
 <p>This is the repository is meant to be used for installing the financeMacroFactors package.
 A wheel dstribution of this package is present in the <cite>dist</cite> folder and may be
 installed within your virtual enviroonment.</p>
-<p><cite>pip3 install financeMacroFactors-&lt;version&gt;-py3-none-any.whl</cite></p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip3 install financeMacroFactors-&lt;version&gt;-py3-none-any.whl
+</pre></div>
+</div>
 <p>Note that the <cite>dist</cite> folder is not included within this repo because the package might
 become excessively large. You will need do clone the repository and build the package yourself
 on your system.</p>
 <p>Alternatively, since git allows you to install packages directly from Github. Consider
 doing the following within your virtual environment:</p>
-<p><cite>pip3 install git+https://github.com/sankhaMukherjee/financeMacroFactors.git</cite></p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip3 install git+https://github.com/sankhaMukherjee/financeMacroFactors.git
+</pre></div>
+</div>
 </div>
 <div class="section" id="building-from-source">
 <h2>Building from source<a class="headerlink" href="#building-from-source" title="Permalink to this headline">¶</a></h2>
@@ -195,12 +197,12 @@ doing the following within your virtual environment:</p>
 <li><p>Install a virtual enviromnent, and istall the required packages</p></li>
 <li><p>Buid the system</p></li>
 </ul>
-<p>A <cite>Makefile</cite> has been provided for aiding with this process. The following commands should allow you do do the following</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> has been provided for aiding with this process. The following commands should allow you do do the following</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><cite>make grantPermission</cite>: grants execute permission to all shell scripts in the [<cite>bin</cite>](../master/bin) folder</p></li>
-<li><p><cite>make clean</cite>: clean unwanted and temporary files that are generated</p></li>
-<li><p><cite>make build</cite>: This will allow you to build Wheel packages for your system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">grantPermission</span></code>: grants execute permission to all shell scripts in the [<cite>bin</cite>](../master/bin) folder</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>: clean unwanted and temporary files that are generated</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">build</span></code>: This will allow you to build Wheel packages for your system</p></li>
 </ul>
 </div></blockquote>
 </div></blockquote>
@@ -215,10 +217,10 @@ doing the following within your virtual environment:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="release notes.html" class="btn btn-neutral float-left" title="Release Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to financeMacroFactors’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
