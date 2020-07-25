@@ -13,25 +13,22 @@ used by value-investors who wish to create algorithmic investing
 platforms that leverage free/paid data sources for their resource.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
-   introduction
-   release notes
    installing
+   introduction
    tutorials
    examples
+   release notes
    unit testing
-
-API Reference
--------------
-
-.. include:: modules.rst
+   API Reference
 
 
 Indices and tables
-==================
+-------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
