@@ -51,6 +51,20 @@ def getStockDataYahoo( ticker, startDate=dt.now()-tDel(365), endDate=dt.now(), f
 
     logger = logging.getLogger(logBase + 'getTickerFundamentalDataMW')
 
+    miniMonthMaps = {
+        'Jan'  : 1  , 
+        'Feb'  : 2  , 
+        'Mar'  : 3  , 
+        'Apr'  : 4  , 
+        'May'  : 5  , 
+        'Jun'  : 6  , 
+        'Jul'  : 7  , 
+        'Aug'  : 8  , 
+        'Sep'  : 9  , 
+        'Oct'  : 10 ,  
+        'Nov'  : 11 ,  
+        'Dec'  : 12 }
+
     possibleFrequencies = ['1d', '1wk', '1mo']
     if frequency not in possibleFrequencies:
         logger.error(f'Incorrect frequency supplied {frequency}. Should be one of {possibleFrequencies}')
@@ -81,15 +95,25 @@ def getStockDataYahoo( ticker, startDate=dt.now()-tDel(365), endDate=dt.now(), f
         allData = []
         for tNo, table in enumerate(tables):
             for i, row in enumerate(table.find_all('tr')):
+
+                
                 if (i == 0) and (tNo == 0):
                     header = [d.get_text().strip() for d in row.find_all('th')]
                     allData.append(header)
 
 
                 data = [d.get_text() for d in row.find_all('td')]
+                logger.debug(f'Row [{i:4d}]: Processing data - {data}')
 
                 if len(data) < len(header):
+                    logger.debug(f'Skipping [{data}]')
                     continue
+
+                if '-' in data:
+                    logger.debug(f'Skipping [{data}]')
+                    continue
+
+
                     
                 # convert the date to datetime
                 if convert:
@@ -101,6 +125,7 @@ def getStockDataYahoo( ticker, startDate=dt.now()-tDel(365), endDate=dt.now(), f
                 data = data[:1] + [float(d.replace(',','')) for d in data[1:]]
                 allData.append(data)
 
+                
         logger.debug(f'A total if {len(allData)} values generated. Returning data')
 
         return allData
