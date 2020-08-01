@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>financeMacroFactors.companies.yahooData &mdash; financeMacroFactors 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> financeMacroFactors
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unit testing.html">Unit Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../API Reference.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">financeMacroFactors</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>financeMacroFactors.companies.yahooData</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for financeMacroFactors.companies.yahooData</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span> 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span> <span class="k">as</span> <span class="n">tDel</span>
+
+<span class="n">logBase</span> <span class="o">=</span> <span class="s1">&#39;financeMacroFactors.companies.yahooData.&#39;</span>
+
+<div class="viewcode-block" id="getStockDataYahoo"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.yahooData.getStockDataYahoo">[docs]</a><span class="k">def</span> <span class="nf">getStockDataYahoo</span><span class="p">(</span> <span class="n">ticker</span><span class="p">,</span> <span class="n">startDate</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">-</span><span class="n">tDel</span><span class="p">(</span><span class="mi">365</span><span class="p">),</span> <span class="n">endDate</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">frequency</span><span class="o">=</span><span class="s1">&#39;1mo&#39;</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;obtains historical stock prices from Yahoo!</span>
+
+<span class="sd">    Historic prices of a company as obtained form yahoo. It comprises of a list of lists.</span>
+<span class="sd">    The first like represents the header. The data is present in the following lines. </span>
+<span class="sd">    Data for dividents and stock splits are removed from the list. All numerical values</span>
+<span class="sd">    are converted to floating point numbers. If ``convert`` is set to ``True``, the dates</span>
+<span class="sd">    are converted into a ``datetime.datetime`` object. Otherwise it is retained as a string.</span>
+
+<span class="sd">    The returned data like the following:</span>
+
+<span class="sd">    [[&#39;Date&#39;, &#39;Open&#39;, &#39;High&#39;, &#39;Low&#39;, &#39;Close*&#39;, &#39;Adj. close**&#39;, &#39;Volume&#39;],</span>
+<span class="sd">    [datetime.datetime(2020, 7, 31, 0, 0), 204.4, 205.1, 199.01, 205.01, 205.01, 51247969.0],</span>
+<span class="sd">    [datetime.datetime(2020, 7, 1, 0, 0), 203.14, 216.38, 197.51, 205.01, 205.01, 770306200.0],</span>
+<span class="sd">    ...</span>
+<span class="sd">    ]</span>
+
+<span class="sd">    In case there is an error, an error will be logged and an empty list will be returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ticker : str</span>
+<span class="sd">        a valid sticker symbol of the company for which the data is to be obtained.</span>
+<span class="sd">    startDate : datetime.datetime, optional</span>
+<span class="sd">        This is the start date from which the date should be obtained, by default </span>
+<span class="sd">        ``dt.now()-tDel(365)``</span>
+<span class="sd">    endDate : datetime.datetime, optional</span>
+<span class="sd">        This is the last datetime for which the data should be obtained, </span>
+<span class="sd">        by default ``dt.now()``</span>
+<span class="sd">    frequency : str, optional</span>
+<span class="sd">        This is either ``&#39;1d&#39;``, ``&#39;1wk&#39;``, ``&#39;1mo&#39;``. By default this is set</span>
+<span class="sd">        to ``&#39;1mo&#39;`` for an average data for a month.</span>
+<span class="sd">    convert : bool, optional</span>
+<span class="sd">        If this is set to ``True``, then the dates are converted into ``datetime.datetime``</span>
+<span class="sd">        objects. Otherwise, they are kept as strings. By default, this is set to</span>
+<span class="sd">        ``True``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list</span>
+<span class="sd">        Stock data as returned from Yahoo. See the description above.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logBase</span> <span class="o">+</span> <span class="s1">&#39;getTickerFundamentalDataMW&#39;</span><span class="p">)</span>
+
+    <span class="n">possibleFrequencies</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1d&#39;</span><span class="p">,</span> <span class="s1">&#39;1wk&#39;</span><span class="p">,</span> <span class="s1">&#39;1m&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">frequency</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">possibleFrequencies</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Incorrect frequency supplied </span><span class="si">{</span><span class="n">frequency</span><span class="si">}</span><span class="s1">. Should be one of </span><span class="si">{</span><span class="n">possibleFrequencies</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">string</span>  <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://sg.finance.yahoo.com/quote/</span><span class="si">{</span><span class="n">ticker</span><span class="si">}</span><span class="s1">/history?&#39;</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;period1=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">startDate</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&amp;period2=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">endDate</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="s1">&#39;&amp;interval=1mo&#39;</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="s1">&#39;&amp;filter=history&#39;</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="s1">&#39;&amp;frequency=1mo&#39;</span> 
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Attempting to obtain data from </span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">html_data</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obtained HTML data&#39;</span><span class="p">)</span>
+
+        <span class="n">page_content</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html_data</span><span class="p">,</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converted to page content information&#39;</span><span class="p">)</span>
+
+        <span class="n">tables</span> <span class="o">=</span> <span class="n">page_content</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Table informaiton generated. Starting to parse the data&#39;</span><span class="p">)</span>
+
+        <span class="c1"># There is only a single table in this page</span>
+        <span class="n">allData</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tNo</span><span class="p">,</span> <span class="n">table</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tNo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">)]</span>
+                    <span class="n">allData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+
+                <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                    
+                <span class="c1"># convert the date to datetime</span>
+                <span class="k">if</span> <span class="n">convert</span><span class="p">:</span>
+                    <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">miniMonthMaps</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+                    <span class="n">date</span>    <span class="o">=</span> <span class="n">dt</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span>
+                    
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+                <span class="n">allData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;A total if </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">allData</span><span class="p">)</span><span class="si">}</span><span class="s1"> values generated. Returning data&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">allData</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to get Stock data from Yahoo: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+    <span class="k">return</span> <span class="p">[]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Sankha S. Mukherjee
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

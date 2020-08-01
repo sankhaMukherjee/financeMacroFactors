@@ -20,6 +20,14 @@ financeMacroFactors.companies.marketWarchData module
    :undoc-members:
    :show-inheritance:
 
+financeMacroFactors.companies.yahooData module
+----------------------------------------------
+
+.. automodule:: financeMacroFactors.companies.yahooData
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Module contents
 ---------------

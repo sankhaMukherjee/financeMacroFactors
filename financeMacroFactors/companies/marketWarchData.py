@@ -126,7 +126,6 @@ def getDataFromMWURL(url, convert=True):
         logger.error(f'Unable to obtain the data from the URL [{url}]: {e}')
         return []
 
-
 def getTickerFundamentalDataMW(ticker, convert=True):
     '''get Valuation data for the supplied ticker
     This is going to get all financials from marketwatch, including the income statement,
@@ -175,3 +174,5 @@ def getTickerFundamentalDataMW(ticker, convert=True):
         
 
     return allResults
+
+
