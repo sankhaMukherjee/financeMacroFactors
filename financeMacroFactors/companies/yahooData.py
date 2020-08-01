@@ -51,7 +51,7 @@ def getStockDataYahoo( ticker, startDate=dt.now()-tDel(365), endDate=dt.now(), f
 
     logger = logging.getLogger(logBase + 'getTickerFundamentalDataMW')
 
-    possibleFrequencies = ['1d', '1wk', '1m']
+    possibleFrequencies = ['1d', '1wk', '1mo']
     if frequency not in possibleFrequencies:
         logger.error(f'Incorrect frequency supplied {frequency}. Should be one of {possibleFrequencies}')
         return []
