@@ -330,6 +330,154 @@
 
     <span class="k">return</span> <span class="n">allResults</span></div>
 
+<span class="n">monthMaps</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;January&#39;</span>    <span class="p">:</span> <span class="mi">1</span>  <span class="p">,</span> 
+    <span class="s1">&#39;February&#39;</span>   <span class="p">:</span> <span class="mi">2</span>  <span class="p">,</span> 
+    <span class="s1">&#39;March&#39;</span>      <span class="p">:</span> <span class="mi">3</span>  <span class="p">,</span> 
+    <span class="s1">&#39;April&#39;</span>      <span class="p">:</span> <span class="mi">4</span>  <span class="p">,</span> 
+    <span class="s1">&#39;May&#39;</span>        <span class="p">:</span> <span class="mi">5</span>  <span class="p">,</span> 
+    <span class="s1">&#39;June&#39;</span>       <span class="p">:</span> <span class="mi">6</span>  <span class="p">,</span> 
+    <span class="s1">&#39;July&#39;</span>       <span class="p">:</span> <span class="mi">7</span>  <span class="p">,</span> 
+    <span class="s1">&#39;August&#39;</span>     <span class="p">:</span> <span class="mi">8</span>  <span class="p">,</span> 
+    <span class="s1">&#39;September&#39;</span>  <span class="p">:</span> <span class="mi">9</span>  <span class="p">,</span> 
+    <span class="s1">&#39;October&#39;</span>    <span class="p">:</span> <span class="mi">10</span> <span class="p">,</span>  
+    <span class="s1">&#39;November&#39;</span>   <span class="p">:</span> <span class="mi">11</span> <span class="p">,</span>  
+    <span class="s1">&#39;December&#39;</span>   <span class="p">:</span> <span class="mi">12</span> <span class="p">}</span>
+
+<span class="n">miniMonthMaps</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Jan&#39;</span>  <span class="p">:</span> <span class="mi">1</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Feb&#39;</span>  <span class="p">:</span> <span class="mi">2</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Mar&#39;</span>  <span class="p">:</span> <span class="mi">3</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Apr&#39;</span>  <span class="p">:</span> <span class="mi">4</span>  <span class="p">,</span> 
+    <span class="s1">&#39;May&#39;</span>  <span class="p">:</span> <span class="mi">5</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Jun&#39;</span>  <span class="p">:</span> <span class="mi">6</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Jul&#39;</span>  <span class="p">:</span> <span class="mi">7</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Aug&#39;</span>  <span class="p">:</span> <span class="mi">8</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Sep&#39;</span>  <span class="p">:</span> <span class="mi">9</span>  <span class="p">,</span> 
+    <span class="s1">&#39;Oct&#39;</span>  <span class="p">:</span> <span class="mi">10</span> <span class="p">,</span>  
+    <span class="s1">&#39;Nov&#39;</span>  <span class="p">:</span> <span class="mi">11</span> <span class="p">,</span>  
+    <span class="s1">&#39;Dec&#39;</span>  <span class="p">:</span> <span class="mi">12</span> <span class="p">}</span>
+
+<div class="viewcode-block" id="convertToDates"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.convertToDates">[docs]</a><span class="k">def</span> <span class="nf">convertToDates</span><span class="p">(</span><span class="n">yearInfo</span><span class="p">):</span>
+    <span class="s1">&#39;Internal function - do not use&#39;</span>
+    
+    <span class="n">startingMonth</span> <span class="o">=</span> <span class="n">yearInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">startingMonth</span> <span class="o">=</span> <span class="n">monthMaps</span><span class="p">[</span><span class="n">startingMonth</span><span class="p">]</span> <span class="c1"># Convert month to an integer</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">yearInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]]</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="p">[(</span><span class="n">dt</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">startingMonth</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-</span> <span class="n">tDel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="p">)</span>  <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">dates</span></div>
+
+<div class="viewcode-block" id="extractYearlyData"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.extractYearlyData">[docs]</a><span class="k">def</span> <span class="nf">extractYearlyData</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">toExtract</span><span class="o">=</span><span class="s1">&#39;EPS (Diluted)&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;extract required data from a given list of items</span>
+
+<span class="sd">    This is a utility function that will allow one to easily</span>
+<span class="sd">    extract any informamtion from the MWData that you have already</span>
+<span class="sd">    downloaded. For example, from the &quot;IncomeStatement&quot; It is </span>
+<span class="sd">    possible to extract information about the &quot;Earnings per Share&quot;.</span>
+
+<span class="sd">    It is important to know that the information provided should</span>
+<span class="sd">    not ge generated by the user, but rather through the function</span>
+<span class="sd">    ``getTickerFundamentalDataMW()`` with the parameter ``convert``</span>
+<span class="sd">    set to ``False``.</span>
+<span class="sd">    </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    info : list</span>
+<span class="sd">        List containing yearly information about a particular company.</span>
+<span class="sd">    toExtract : str, optional</span>
+<span class="sd">        Information that you wish to extract, by default &#39;EPS (Diluted)&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        returns a list of tuples containing the dates and the</span>
+<span class="sd">        values corresponding to the information requested</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logBase</span> <span class="o">+</span> <span class="s1">&#39;extractYearlyData&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="n">convertToDates</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">info</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="n">toExtract</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to extract [</span><span class="si">{</span><span class="n">toExtract</span><span class="si">}</span><span class="s1">] from the data&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Check to see whether the information you provided is correct&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to extract requested data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="convertToMonths"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.convertToMonths">[docs]</a><span class="k">def</span> <span class="nf">convertToMonths</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="s1">&#39;Internal function - do not use&#39;</span>
+    
+    <span class="n">dates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">miniMonthMaps</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+        
+        <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">dt</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">dates</span></div>
+
+<div class="viewcode-block" id="extractQuarterlyData"><a class="viewcode-back" href="../../../financeMacroFactors.companies.html#financeMacroFactors.companies.marketWarchData.extractQuarterlyData">[docs]</a><span class="k">def</span> <span class="nf">extractQuarterlyData</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">toExtract</span><span class="o">=</span><span class="s1">&#39;EPS (Diluted)&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;extract required data from a given list of items</span>
+
+<span class="sd">    This is a utility function that will allow one to easily</span>
+<span class="sd">    extract any informamtion from the MWData that you have already</span>
+<span class="sd">    downloaded. For example, from the &quot;IncomeStatement&quot; It is </span>
+<span class="sd">    possible to extract information about the &quot;Earnings per Share&quot;.</span>
+
+<span class="sd">    It is important to know that the information provided should</span>
+<span class="sd">    not ge generated by the user, but rather through the function</span>
+<span class="sd">    ``getTickerFundamentalDataMW()`` with the parameter ``convert``</span>
+<span class="sd">    set to ``False``.</span>
+<span class="sd">    </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    info : list</span>
+<span class="sd">        List containing quarterly information about a particular company.</span>
+<span class="sd">    toExtract : str, optional</span>
+<span class="sd">        Information that you wish to extract, by default &#39;EPS (Diluted)&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        returns a list of tuples containing the dates and the</span>
+<span class="sd">        values corresponding to the information requested</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logBase</span> <span class="o">+</span> <span class="s1">&#39;extractQuarterlyData&#39;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="n">convertToMonths</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">info</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;EPS (Diluted)&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to extract [</span><span class="si">{</span><span class="n">toExtract</span><span class="si">}</span><span class="s1">] from the data&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Check to see whether the information you provided is correct&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        
+        
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+    
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to extract requested data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+    <span class="k">return</span> <span class="p">[]</span></div>
 
 </pre></div>
 

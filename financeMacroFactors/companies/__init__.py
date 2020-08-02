@@ -9,5 +9,10 @@ open sources.
 '''
 
 from financeMacroFactors.companies.companyLists import getSNP500CompanyList
+
 from financeMacroFactors.companies.marketWarchData import getTickerFundamentalDataMW
+from financeMacroFactors.companies.marketWarchData import extractYearlyData
+from financeMacroFactors.companies.marketWarchData import extractQuarterlyData
+
+
 from financeMacroFactors.companies.yahooData import getStockDataYahoo
