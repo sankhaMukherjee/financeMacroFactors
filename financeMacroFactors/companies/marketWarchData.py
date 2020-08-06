@@ -1,6 +1,8 @@
 import logging
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime as dt 
+from datetime import timedelta as tDel
 
 
 logBase = 'financeMacroFactors.companies.marketWatchData.'
@@ -206,11 +208,21 @@ miniMonthMaps = {
 def convertToDates(yearInfo):
     'Internal function - do not use'
     
-    startingMonth = yearInfo[0][0].split('.')[0].split()[-1].split('-')[0]
-    startingMonth = monthMaps[startingMonth] # Convert month to an integer
-    years = [int(y) for y in yearInfo[0][1:]]
-    dates = [(dt(y, startingMonth, 1)- tDel(1)  )  for y in years]
-    
+    logger = logging.getLogger(logBase + 'convertToDates')
+
+    try:
+        startingMonth = yearInfo[0][0].split('.')[0].split()[-1].split('-')[0]
+        startingMonth = monthMaps[startingMonth] # Convert month to an integer
+
+        # Sometimes in marketwatch data, the year is an empty string. We
+        # Need to address that. This typically happens when the data is not
+        # available on a aprticular year ...
+        years = [(int(y) if y!='' else -1) for y in yearInfo[0][1:]]
+        dates = [((dt(y, startingMonth, 1)- tDel(1)  ) if y > 1900 else None)  for y in years ]
+    except Exception as e:
+        print(f'Unable to convert {yearInfo} to date: {e}')
+        return None
+            
     return dates
 
 def extractYearlyData(info, toExtract='EPS (Diluted)'):
@@ -246,12 +258,16 @@ def extractYearlyData(info, toExtract='EPS (Diluted)'):
     try:
         dates = convertToDates(info)
         data = [d[1:] for d in info if d[0]==toExtract]
+
         if data == []:
             logger.error(f'Unable to extract [{toExtract}] from the data')
             logger.error('Check to see whether the information you provided is correct')
             return []
         
+        # In case there is a descripency in the dates such that a particular
+        # date is 0, this is going to exclude that date ...
         data = data[0]
+        dates, data = zip(*[(d1, d2) for d1, d2 in  zip(dates, data) if d1 is not None])
         data = list(zip(dates, data))
         
         return data
@@ -263,14 +279,26 @@ def extractYearlyData(info, toExtract='EPS (Diluted)'):
 def convertToMonths(info):
     'Internal function - do not use'
     
-    dates = []
-    for d in info[0][1:]:
-        d, m, y = d.split('-')
-        d, y = int(d), int(y)
-        m = miniMonthMaps[m]
-        
-        dates.append( dt(y, m, d) )
-        
+    logger = logging.getLogger(logBase + 'convertToMonths')
+
+    try:
+
+        dates = []
+        for d in info[0][1:]:
+
+            if d == '':
+                dates.append(None)
+                continue
+
+            d, m, y = d.split('-')
+            d, y = int(d), int(y)
+            m = miniMonthMaps[m]
+            
+            dates.append( dt(y, m, d) )
+    except Exception as e:
+        logger.error(f'Unable to convert to month {info}: {e}')
+        return None
+
     return dates
 
 def extractQuarterlyData(info, toExtract='EPS (Diluted)'):
@@ -304,6 +332,10 @@ def extractQuarterlyData(info, toExtract='EPS (Diluted)'):
     logger = logging.getLogger(logBase + 'extractQuarterlyData')
     
     try:
+        if info == []:
+            logger.error(f'Empty data provided. An empty list is returned')
+            return []
+
         dates = convertToMonths(info)
         data = [d[1:] for d in info if d[0]=='EPS (Diluted)']
         if data == []:
@@ -313,6 +345,7 @@ def extractQuarterlyData(info, toExtract='EPS (Diluted)'):
         
         
         data = data[0]
+        dates, data = zip(*[(d1, d2) for d1, d2 in  zip(dates, data) if d1 is not None])
         data = list(zip(dates, data))
 
         return data
