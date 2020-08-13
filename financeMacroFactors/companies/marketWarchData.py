@@ -337,7 +337,7 @@ def extractQuarterlyData(info, toExtract='EPS (Diluted)'):
             return []
 
         dates = convertToMonths(info)
-        data = [d[1:] for d in info if d[0]=='EPS (Diluted)']
+        data = [d[1:] for d in info if d[0]==toExtract]
         if data == []:
             logger.error(f'Unable to extract [{toExtract}] from the data')
             logger.error('Check to see whether the information you provided is correct')
