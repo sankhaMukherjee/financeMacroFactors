@@ -7,5 +7,4 @@ A set of examples are provided
    :maxdepth: 4
 
    SNP 500 Company List
-   Example Output
    

@@ -18,8 +18,8 @@ platforms that leverage free/paid data sources for their resource.
 
    installing
    introduction
-   tutorials
-   examples
+   tutorials/tutorials
+   examples/examples
    release notes
    unit testing
    API Reference
