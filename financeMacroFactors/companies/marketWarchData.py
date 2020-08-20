@@ -220,7 +220,7 @@ def convertToDates(yearInfo):
         years = [(int(y) if y!='' else -1) for y in yearInfo[0][1:]]
         dates = [((dt(y, startingMonth, 1)- tDel(1)  ) if y > 1900 else None)  for y in years ]
     except Exception as e:
-        print(f'Unable to convert {yearInfo} to date: {e}')
+        print(f'Unable to convert {yearInfo} to a date: {e}')
         return None
             
     return dates
@@ -256,12 +256,23 @@ def extractYearlyData(info, toExtract='EPS (Diluted)'):
     logger = logging.getLogger(logBase + 'extractYearlyData')
 
     try:
+        if info == []:
+            logger.error('Empty input provided. Unable to generate output. Empty list returned')
+            return []
+
         dates = convertToDates(info)
+        if dates is None:
+            logger.error(f'Unable to extract date information. Empty list returned.')
+            return []
+
+
         data = [d[1:] for d in info if d[0]==toExtract]
 
         if data == []:
+            availableVariables = '[' + ']['.join([d[0] for d in info]) + ']'
             logger.error(f'Unable to extract [{toExtract}] from the data')
-            logger.error('Check to see whether the information you provided is correct')
+            logger.error(f'Check to see whether the information you provided is correct')
+            logger.error(f'Available variables are: {availableVariables}')
             return []
         
         # In case there is a descripency in the dates such that a particular
@@ -273,7 +284,7 @@ def extractYearlyData(info, toExtract='EPS (Diluted)'):
         return data
 
     except Exception as e:
-        logger.error(f'Unable to extract requested data: {e}')
+        logger.error(f'Unable to extract requested data from {info}: {e}')
         return []
 
 def convertToMonths(info):
@@ -337,10 +348,16 @@ def extractQuarterlyData(info, toExtract='EPS (Diluted)'):
             return []
 
         dates = convertToMonths(info)
+        if dates is None:
+            logger.error(f'Unable to extract date information. Empty list returned.')
+            return []
+
         data = [d[1:] for d in info if d[0]==toExtract]
         if data == []:
+            availableVariables = '[' + ']['.join([d[0] for d in info]) + ']'
             logger.error(f'Unable to extract [{toExtract}] from the data')
-            logger.error('Check to see whether the information you provided is correct')
+            logger.error(f'Check to see whether the information you provided is correct')
+            logger.error(f'Available variables are: {availableVariables}')
             return []
         
         
