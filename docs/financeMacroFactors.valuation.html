@@ -167,6 +167,36 @@
 <div class="section" id="module-financeMacroFactors.valuation.valuationMethods">
 <span id="financemacrofactors-valuation-valuationmethods-module"></span><h2>financeMacroFactors.valuation.valuationMethods module<a class="headerlink" href="#module-financeMacroFactors.valuation.valuationMethods" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
+<dt id="financeMacroFactors.valuation.valuationMethods.discountedCashFlow">
+<code class="sig-prename descclassname">financeMacroFactors.valuation.valuationMethods.</code><code class="sig-name descname">discountedCashFlow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fcf</span></em>, <em class="sig-param"><span class="n">shares</span></em>, <em class="sig-param"><span class="n">discountingFactor</span><span class="o">=</span><span class="default_value">1.1</span></em>, <em class="sig-param"><span class="n">terminalFactor</span><span class="o">=</span><span class="default_value">10.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/financeMacroFactors/valuation/valuationMethods.html#discountedCashFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#financeMacroFactors.valuation.valuationMethods.discountedCashFlow" title="Permalink to this definition">¶</a></dt>
+<dd><p>valuation of a company using the DCF method</p>
+<p>This funciton calculates the valuation of a company using the Discounted Cash Flow method.
+In case there is an error in the calculations, this is going to log an error and will
+return a value of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fcf</strong> (<em>numpy 1d-array</em>) – The free cash flow of the company for N years</p></li>
+<li><p><strong>shares</strong> (<em>numpy 1d-array</em>) – Number of free shares outstanding for the company. This should have the same dimensionality
+as the fcf vector. Moreover, there should be a one-to-one correspondence between the values
+within the fcf vector and the shares vector.</p></li>
+<li><p><strong>discountingFactor</strong> (<em>float</em><em>, </em><em>optional</em>) – The discounting factor by which future earnings shoule be discounted, by default 1.1
+which represents a 10% valuation for the future value of money</p></li>
+<li><p><strong>terminalFactor</strong> (<em>float</em><em>, </em><em>optional</em>) – The value by which the final extrapolated EPS value should be multiplied so as to obtain
+a terminal value of the company, by default 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The calculated valuation of the company. If there is an error, a <code class="docutils literal notranslate"><span class="pre">None</span></code> will be
+returned.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="financeMacroFactors.valuation.valuationMethods.discountedFutureEarnings">
 <code class="sig-prename descclassname">financeMacroFactors.valuation.valuationMethods.</code><code class="sig-name descname">discountedFutureEarnings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span></em>, <em class="sig-param"><span class="n">discountingFactor</span><span class="o">=</span><span class="default_value">1.1</span></em>, <em class="sig-param"><span class="n">terminalFactor</span><span class="o">=</span><span class="default_value">10.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/financeMacroFactors/valuation/valuationMethods.html#discountedFutureEarnings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#financeMacroFactors.valuation.valuationMethods.discountedFutureEarnings" title="Permalink to this definition">¶</a></dt>
 <dd><p>obtain DFE Valuation</p>
@@ -178,7 +208,7 @@ and a value of <code class="docutils literal notranslate"><span class="pre">None
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>eps</strong> (<em>earnings per share</em>) – The last N years of data</p></li>
+<li><p><strong>eps</strong> (<em>numpy 1d-array</em>) – The earnings for share for the last N years of data</p></li>
 <li><p><strong>discountingFactor</strong> (<em>float</em><em>, </em><em>optional</em>) – The discounting factor by which future earnings shoule be discounted, by default 1.1
 which represents a 10% valuation for the future value of money</p></li>
 <li><p><strong>terminalFactor</strong> (<em>float</em><em>, </em><em>optional</em>) – The value by which the final extrapolated EPS value should be multiplied so as to obtain

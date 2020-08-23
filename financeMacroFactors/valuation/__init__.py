@@ -19,4 +19,5 @@ know its value? <https://medium.com/@sankha.mukherjee_007/sure-you-know-the-stoc
 '''
 
 from financeMacroFactors.valuation.valuationMethods import discountedFutureEarnings
+from financeMacroFactors.valuation.valuationMethods import discountedCashFlow
 
