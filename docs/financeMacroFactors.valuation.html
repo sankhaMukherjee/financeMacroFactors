@@ -225,6 +225,37 @@ returned.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="financeMacroFactors.valuation.valuationMethods.priceToSalesRatio">
+<code class="sig-prename descclassname">financeMacroFactors.valuation.valuationMethods.</code><code class="sig-name descname">priceToSalesRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">revenue</span></em>, <em class="sig-param"><span class="n">shares</span></em>, <em class="sig-param"><span class="n">price</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/financeMacroFactors/valuation/valuationMethods.html#priceToSalesRatio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#financeMacroFactors.valuation.valuationMethods.priceToSalesRatio" title="Permalink to this definition">¶</a></dt>
+<dd><p>valuation of a company using the P/S ration method</p>
+<p>This will allow you to get the valuation of the company with the price-to-sales method.
+In case that there is an error detected, this is going to return a <code class="docutils literal notranslate"><span class="pre">None</span></code> and will
+also log an appropriate error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>revenue</strong> (<em>numpy 1d-array</em>) – This is a vector of yearly revenues associated with the company for the last N
+years. This is typically present in the Income Statement of the company.</p></li>
+<li><p><strong>shares</strong> (<em>numpy 1d-array</em>) – This is a vector containing the number of shares outstanding of the company
+for the same years for which the revenue is provided. There should be a
+one-to-one correspondence between the revenue and the number of shares
+outstanding.</p></li>
+<li><p><strong>price</strong> (<em>numpy 1d-array</em>) – This is a vector representing the price of a single share for the last N
+years. The size of the vector should be the same as the size of the other
+two input vectors. There should be a one-to-one correspondence between the
+values within the vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The valuation of the company according to the P/S method</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-financeMacroFactors.valuation">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-financeMacroFactors.valuation" title="Permalink to this headline">¶</a></h2>

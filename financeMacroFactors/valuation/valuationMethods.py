@@ -30,7 +30,7 @@ def discountedFutureEarnings(eps, discountingFactor=1.1, terminalFactor=10.0):
         returned.
     '''
 
-    logger = logging.getLogger('financeMacroFactors.companies.companyLists.getSNP500CompanyList')
+    logger = logging.getLogger('financeMacroFactors.valuation.valuationMethods.discountedFutureEarnings')
 
     dfeVlaue = None
     try:
@@ -99,7 +99,7 @@ def discountedCashFlow(fcf, shares, discountingFactor=1.1, terminalFactor=10.0):
     '''
 
 
-    logger = logging.getLogger('financeMacroFactors.companies.companyLists.getSNP500CompanyList')
+    logger = logging.getLogger('financeMacroFactors.valuation.valuationMethods.discountedCashFlow')
 
     dfeVlaue = None
     try:
@@ -116,7 +116,7 @@ def discountedCashFlow(fcf, shares, discountingFactor=1.1, terminalFactor=10.0):
         fcf = np.array(fcf)
         shares = np.array(shares)
 
-        
+
         fcfPerShare = fcf/shares
         xVals = np.arange(N)
         xExt  = np.arange(5) + 1 + xVals[-1]
@@ -140,10 +140,84 @@ def discountedCashFlow(fcf, shares, discountingFactor=1.1, terminalFactor=10.0):
     except Exception as e:
         logger.error(f'+-----------------------------------------------')
         logger.error(f'| Unable to get the valuation using the DFE method: {e}')
-        logger.error(f'| Input data provided: {fcf}, {shares}')
+        logger.error(f'| Input data provided: ')
+        logger.error(f'|    fcf    : {fcf}')
+        logger.error(f'|    shares : {shares}')
         logger.error(f'| A value of None will be returned')
         logger.error(f'+-------------------------------------')
         return None
 
     return dfeValue
 
+
+def priceToSalesRatio(revenue, shares, price):
+    '''valuation of a company using the P/S ration method
+
+    This will allow you to get the valuation of the company with the price-to-sales method. 
+    In case that there is an error detected, this is going to return a ``None`` and will 
+    also log an appropriate error.
+
+    Parameters
+    ----------
+    revenue : numpy 1d-array
+        This is a vector of yearly revenues associated with the company for the last N
+        years. This is typically present in the Income Statement of the company.
+    shares : numpy 1d-array
+        This is a vector containing the number of shares outstanding of the company
+        for the same years for which the revenue is provided. There should be a 
+        one-to-one correspondence between the revenue and the number of shares
+        outstanding.
+    price : numpy 1d-array
+        This is a vector representing the price of a single share for the last N
+        years. The size of the vector should be the same as the size of the other
+        two input vectors. There should be a one-to-one correspondence between the
+        values within the vector.
+
+    Returns
+    -------
+    float
+        The valuation of the company according to the P/S method
+    '''
+
+    psValue = None
+    logger = logging.getLogger('financeMacroFactors.valuation.valuationMethods.priceToSalesRatio')
+
+    try:
+        
+        assert len(revenue) == len(shares), 'dimensions of the revenue and shares vectors are different'
+        assert len(revenue) == len(price), 'dimensions of the revenue and price vectors are different'
+
+        logger.debug(f' Input | revenue : {revenue}')
+        logger.debug(f' Input | shares  : {shares}')
+        logger.debug(f' Input | price   : {price}')
+        logger.debug(f' Calcualting the price to sales ratio')
+
+        revenue = np.array(revenue)
+        shares  = np.array(shares)
+        price   = np.array(price)
+
+
+        p_s = price / ( revenue / shares )
+        logger.debug(f'price to sales ratio = {p_s}')
+
+        mean_ps = p_s.mean()
+        logger.debug(f'The average value of the P/S ratio = {mean_ps}')
+
+        psValue =  mean_ps * (revenue[-1] / shares[-1])
+        logger.debug(f'The P/S valuation = {psValue}')
+
+        return psValue
+
+    except Exception as e:
+        logger.error(f'+-----------------------------------------------')
+        logger.error(f'| Unable to get the valuation using the DFE method: {e}')
+        logger.error(f'| Input data provided: ')
+        logger.error(f'|    revenue : {revenue}')
+        logger.error(f'|    shares  : {shares}')
+        logger.error(f'|    price   : {price}')
+        logger.error(f'| A value of None will be returned')
+        logger.error(f'+-------------------------------------')
+        return None
+        
+
+    return psValue
