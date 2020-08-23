@@ -304,7 +304,6 @@
 
     <span class="k">return</span> <span class="n">dfeValue</span></div>
 
-
 <div class="viewcode-block" id="priceToSalesRatio"><a class="viewcode-back" href="../../../financeMacroFactors.valuation.html#financeMacroFactors.valuation.valuationMethods.priceToSalesRatio">[docs]</a><span class="k">def</span> <span class="nf">priceToSalesRatio</span><span class="p">(</span><span class="n">revenue</span><span class="p">,</span> <span class="n">shares</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;valuation of a company using the P/S ration method</span>
 
@@ -351,7 +350,6 @@
         <span class="n">shares</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shares</span><span class="p">)</span>
         <span class="n">price</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
 
-
         <span class="n">p_s</span> <span class="o">=</span> <span class="n">price</span> <span class="o">/</span> <span class="p">(</span> <span class="n">revenue</span> <span class="o">/</span> <span class="n">shares</span> <span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;price to sales ratio = </span><span class="si">{</span><span class="n">p_s</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -376,6 +374,69 @@
         
 
     <span class="k">return</span> <span class="n">psValue</span></div>
+
+<div class="viewcode-block" id="priceToEarningsRatio"><a class="viewcode-back" href="../../../financeMacroFactors.valuation.html#financeMacroFactors.valuation.valuationMethods.priceToEarningsRatio">[docs]</a><span class="k">def</span> <span class="nf">priceToEarningsRatio</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;valuation of a company using the P/E ration method</span>
+
+<span class="sd">    This will allow you to get the valuation of the company with the price-to-earnings method. </span>
+<span class="sd">    In case that there is an error detected, this is going to return a ``None`` and will </span>
+<span class="sd">    also log an appropriate error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    eps : numpy 1d-array</span>
+<span class="sd">        This is a vector of yearly earnings per share associated with the company </span>
+<span class="sd">        for the last N years. This is typically present in the Income Statement of </span>
+<span class="sd">        the company.</span>
+<span class="sd">    price : numpy 1d-array</span>
+<span class="sd">        This is a vector representing the price of a single share for the last N</span>
+<span class="sd">        years. The size of the vector should be the same as the size of the other</span>
+<span class="sd">        two input vectors. There should be a one-to-one correspondence between the</span>
+<span class="sd">        values within the vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The valuation of the company according to the P/E method</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">peValue</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;financeMacroFactors.valuation.valuationMethods.priceToSalesRatio&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">price</span><span class="p">),</span> <span class="s1">&#39;dimensions of the eps and price vectors are different&#39;</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39; Input | eps     : </span><span class="si">{</span><span class="n">eps</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39; Input | price   : </span><span class="si">{</span><span class="n">price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39; Calcualting the P/E ratio&#39;</span><span class="p">)</span>
+
+        <span class="n">eps</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span>
+        <span class="n">price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+
+        <span class="n">p_e</span> <span class="o">=</span> <span class="n">price</span> <span class="o">/</span> <span class="p">(</span> <span class="n">eps</span> <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;price to earnings ratio = </span><span class="si">{</span><span class="n">p_e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">mean_pe</span> <span class="o">=</span> <span class="n">p_e</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The average value of the P/E ratio = </span><span class="si">{</span><span class="n">mean_pe</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">peValue</span> <span class="o">=</span>  <span class="n">mean_pe</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The P/E valuation = </span><span class="si">{</span><span class="n">peValue</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">peValue</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;+-----------------------------------------------&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| Unable to get the valuation using the DFE method: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| Input data provided: &#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;|    eps : </span><span class="si">{</span><span class="n">eps</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;|    price   : </span><span class="si">{</span><span class="n">price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| A value of None will be returned&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;+-------------------------------------&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+        
+
+    <span class="k">return</span> <span class="n">peValue</span></div>
 </pre></div>
 
            </div>

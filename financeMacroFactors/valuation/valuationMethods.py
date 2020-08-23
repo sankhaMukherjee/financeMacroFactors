@@ -149,7 +149,6 @@ def discountedCashFlow(fcf, shares, discountingFactor=1.1, terminalFactor=10.0):
 
     return dfeValue
 
-
 def priceToSalesRatio(revenue, shares, price):
     '''valuation of a company using the P/S ration method
 
@@ -196,7 +195,6 @@ def priceToSalesRatio(revenue, shares, price):
         shares  = np.array(shares)
         price   = np.array(price)
 
-
         p_s = price / ( revenue / shares )
         logger.debug(f'price to sales ratio = {p_s}')
 
@@ -221,3 +219,66 @@ def priceToSalesRatio(revenue, shares, price):
         
 
     return psValue
+
+def priceToEarningsRatio(eps, price):
+    '''valuation of a company using the P/E ration method
+
+    This will allow you to get the valuation of the company with the price-to-earnings method. 
+    In case that there is an error detected, this is going to return a ``None`` and will 
+    also log an appropriate error.
+
+    Parameters
+    ----------
+    eps : numpy 1d-array
+        This is a vector of yearly earnings per share associated with the company 
+        for the last N years. This is typically present in the Income Statement of 
+        the company.
+    price : numpy 1d-array
+        This is a vector representing the price of a single share for the last N
+        years. The size of the vector should be the same as the size of the other
+        two input vectors. There should be a one-to-one correspondence between the
+        values within the vector.
+
+    Returns
+    -------
+    float
+        The valuation of the company according to the P/E method
+    '''
+
+    peValue = None
+    logger = logging.getLogger('financeMacroFactors.valuation.valuationMethods.priceToSalesRatio')
+
+    try:
+        
+        assert len(eps) == len(price), 'dimensions of the eps and price vectors are different'
+        
+        logger.debug(f' Input | eps     : {eps}')
+        logger.debug(f' Input | price   : {price}')
+        logger.debug(f' Calcualting the P/E ratio')
+
+        eps   = np.array(eps)
+        price = np.array(price)
+
+        p_e = price / ( eps )
+        logger.debug(f'price to earnings ratio = {p_e}')
+
+        mean_pe = p_e.mean()
+        logger.debug(f'The average value of the P/E ratio = {mean_pe}')
+
+        peValue =  mean_pe * (eps[-1])
+        logger.debug(f'The P/E valuation = {peValue}')
+
+        return peValue
+
+    except Exception as e:
+        logger.error(f'+-----------------------------------------------')
+        logger.error(f'| Unable to get the valuation using the DFE method: {e}')
+        logger.error(f'| Input data provided: ')
+        logger.error(f'|    eps : {eps}')
+        logger.error(f'|    price   : {price}')
+        logger.error(f'| A value of None will be returned')
+        logger.error(f'+-------------------------------------')
+        return None
+        
+
+    return peValue
