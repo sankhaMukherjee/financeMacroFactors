@@ -172,6 +172,12 @@
 <li class="toctree-l2"><a class="reference internal" href="financeMacroFactors.companies.html#module-financeMacroFactors.companies">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="financeMacroFactors.valuation.html">financeMacroFactors.valuation package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="financeMacroFactors.valuation.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="financeMacroFactors.valuation.html#module-financeMacroFactors.valuation.valuationMethods">financeMacroFactors.valuation.valuationMethods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="financeMacroFactors.valuation.html#module-financeMacroFactors.valuation">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -202,8 +208,31 @@ the string <code class="docutils literal notranslate"><span class="pre">'Hello</
 </div>
 <div class="section" id="module-financeMacroFactors">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-financeMacroFactors" title="Permalink to this headline">¶</a></h2>
-<p>A simple summary</p>
-<p>A detailed summary of this project</p>
+<p>Macro Factors that affect stock prices</p>
+<p>This Library provides a set of utilities for calculating
+macro factors that is useful for evaluating whether a
+company is going to be profitable or not. There are
+factors that decide that. This library will evolve over time
+to be able to provide a number of utilities that will ultimately
+allow individuals to generate insights that can be used for
+generating trading strategies.</p>
+<p>Currently the following items are supported:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Data Download (<code class="docutils literal notranslate"><span class="pre">financeMacroFactors.companies</span></code>)</dt><dd><p>1.1. Downloading fundamental data of a company from MarketWatch
+1.2. Downloading stock data from Yahoo! Finance</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Calculate a companies valuation (<code class="docutils literal notranslate"><span class="pre">financeMacroFactors.valuation</span></code>)</dt><dd><p>2.1. The P/S Valuation method
+2.2. The P/E Valuation method
+2.3. The DFE Valuation method
+2.4. The DCF Valuation method</p>
+</dd>
+</dl>
+</li>
+</ol>
 </div>
 </div>
 

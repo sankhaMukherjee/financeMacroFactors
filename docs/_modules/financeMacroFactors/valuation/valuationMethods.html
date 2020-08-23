@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>financeMacroFactors.valuation.valuationMethods &mdash; financeMacroFactors 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> financeMacroFactors
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unit testing.html">Unit Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../API Reference.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">financeMacroFactors</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>financeMacroFactors.valuation.valuationMethods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for financeMacroFactors.valuation.valuationMethods</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="discountedFutureEarnings"><a class="viewcode-back" href="../../../financeMacroFactors.valuation.html#financeMacroFactors.valuation.valuationMethods.discountedFutureEarnings">[docs]</a><span class="k">def</span> <span class="nf">discountedFutureEarnings</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">discountingFactor</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">terminalFactor</span><span class="o">=</span><span class="mf">10.0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;obtain DFE Valuation</span>
+
+<span class="sd">    Calculate the valuation using the Discounted Future Earnings valuation method.</span>
+<span class="sd">    This function assumes that the input for the earnings per share relates to the</span>
+<span class="sd">    yearly EPS values for a company for the previous N years. Ideally this value </span>
+<span class="sd">    is approcimately 5. If this value is less than 3, then an error will be registered</span>
+<span class="sd">    and a value of ``None`` returned.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    eps : numpy 1d-array</span>
+<span class="sd">        The earnings for share for the last N years of data</span>
+<span class="sd">    discountingFactor : float, optional</span>
+<span class="sd">        The discounting factor by which future earnings shoule be discounted, by default 1.1</span>
+<span class="sd">        which represents a 10% valuation for the future value of money</span>
+<span class="sd">    terminalFactor : float, optional</span>
+<span class="sd">        The value by which the final extrapolated EPS value should be multiplied so as to obtain</span>
+<span class="sd">        a terminal value of the company, by default 10</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or None</span>
+<span class="sd">        The calculated valuation of the company. If there is an error, a ``None`` will be</span>
+<span class="sd">        returned.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;financeMacroFactors.companies.companyLists.getSNP500CompanyList&#39;</span><span class="p">)</span>
+
+    <span class="n">dfeVlaue</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">N</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Less than 3 EPS values provided.&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;The result will not be good. A Null value will be returned.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">xVals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="n">xExt</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">xVals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Extrapolating values to the next 5 points&#39;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">xVals</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)</span>
+        <span class="n">epsExt</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xExt</span><span class="p">)</span>
+        <span class="n">epsExt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">terminalFactor</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extrapolated EPS = </span><span class="si">{</span><span class="n">epsExt</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Generating the discounting factor&#39;</span><span class="p">)</span>
+        <span class="n">discount</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">discountingFactor</span><span class="p">)</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;discounting factor = </span><span class="si">{</span><span class="n">discount</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Calculating the DFE&#39;</span><span class="p">)</span>
+        <span class="n">dfeValue</span> <span class="o">=</span> <span class="n">epsExt</span> <span class="o">@</span> <span class="n">discount</span>
+
+        <span class="k">return</span> <span class="n">dfeValue</span>
+
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;+-----------------------------------------------&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| Unable to get the valuation using the DFE method: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| Input data provided: </span><span class="si">{</span><span class="n">eps</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| A value of None will be returned&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;+-------------------------------------&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">dfeValue</span></div>
+
+<div class="viewcode-block" id="discountedCashFlow"><a class="viewcode-back" href="../../../financeMacroFactors.valuation.html#financeMacroFactors.valuation.valuationMethods.discountedCashFlow">[docs]</a><span class="k">def</span> <span class="nf">discountedCashFlow</span><span class="p">(</span><span class="n">fcf</span><span class="p">,</span> <span class="n">shares</span><span class="p">,</span> <span class="n">discountingFactor</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">terminalFactor</span><span class="o">=</span><span class="mf">10.0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;valuation of a company using the DCF method</span>
+
+<span class="sd">    This funciton calculates the valuation of a company using the Discounted Cash Flow method.</span>
+<span class="sd">    In case there is an error in the calculations, this is going to log an error and will</span>
+<span class="sd">    return a value of ``None``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fcf : numpy 1d-array</span>
+<span class="sd">        The free cash flow of the company for N years</span>
+<span class="sd">    shares : numpy 1d-array</span>
+<span class="sd">        Number of free shares outstanding for the company. This should have the same dimensionality</span>
+<span class="sd">        as the fcf vector. Moreover, there should be a one-to-one correspondence between the values</span>
+<span class="sd">        within the fcf vector and the shares vector.</span>
+<span class="sd">    discountingFactor : float, optional</span>
+<span class="sd">        The discounting factor by which future earnings shoule be discounted, by default 1.1</span>
+<span class="sd">        which represents a 10% valuation for the future value of money</span>
+<span class="sd">    terminalFactor : float, optional</span>
+<span class="sd">        The value by which the final extrapolated EPS value should be multiplied so as to obtain</span>
+<span class="sd">        a terminal value of the company, by default 10</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or None</span>
+<span class="sd">        The calculated valuation of the company. If there is an error, a ``None`` will be</span>
+<span class="sd">        returned.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;financeMacroFactors.companies.companyLists.getSNP500CompanyList&#39;</span><span class="p">)</span>
+
+    <span class="n">dfeVlaue</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fcf</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">shares</span><span class="p">),</span> <span class="s1">&#39;dimensions of the fcf and shares vectors are different&#39;</span>
+
+        <span class="n">N</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fcf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Less than 3 EPS values provided.&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;The result will not be good. A Null value will be returned.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">fcf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fcf</span><span class="p">)</span>
+        <span class="n">shares</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shares</span><span class="p">)</span>
+
+        
+        <span class="n">fcfPerShare</span> <span class="o">=</span> <span class="n">fcf</span><span class="o">/</span><span class="n">shares</span>
+        <span class="n">xVals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="n">xExt</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">xVals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Extrapolating values to the next 5 points&#39;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">xVals</span><span class="p">,</span> <span class="n">fcfPerShare</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)</span>
+        <span class="n">fcfExt</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xExt</span><span class="p">)</span>
+        <span class="n">fcfExt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">terminalFactor</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extrapolated EPS = </span><span class="si">{</span><span class="n">fcfExt</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Generating the discounting factor&#39;</span><span class="p">)</span>
+        <span class="n">discount</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">discountingFactor</span><span class="p">)</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;discounting factor = </span><span class="si">{</span><span class="n">discount</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Calculating the DFE&#39;</span><span class="p">)</span>
+        <span class="n">dcfValue</span> <span class="o">=</span> <span class="n">fcfExt</span> <span class="o">@</span> <span class="n">discount</span>
+
+        <span class="k">return</span> <span class="n">dcfValue</span>
+
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;+-----------------------------------------------&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| Unable to get the valuation using the DFE method: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| Input data provided: </span><span class="si">{</span><span class="n">fcf</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">shares</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;| A value of None will be returned&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;+-------------------------------------&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">dfeValue</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Sankha S. Mukherjee
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

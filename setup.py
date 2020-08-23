@@ -30,7 +30,9 @@ setup(
     install_requires=[
         'beautifulsoup4>=4.9.1',
         'requests>=2.24.0',
-        'lxml>=4.5.2'
+        'lxml>=4.5.2',
+        'numpy>=1.19.1',
+        'scipy>=1.5.2'
     ],
     python_requires='>=3.6',
 )
