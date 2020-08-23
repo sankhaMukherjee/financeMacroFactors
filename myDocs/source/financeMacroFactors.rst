@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    financeMacroFactors.companies
+   financeMacroFactors.valuation
 
 Submodules
 ----------
